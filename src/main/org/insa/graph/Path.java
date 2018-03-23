@@ -193,11 +193,23 @@ public class Path {
      * 
      * @return true if the path is valid, false otherwise.
      * 
-     * @deprecated Need to be implemented.
      */
     public boolean isValid() {
-        // TODO:
-        return false;
+    	//si le chemin a aucun arcs -> valide
+        if (this.arcs.size() == 0)
+        {	return true;}
+        
+        
+        int i =0;
+        //test si le premier arc démarre à l'origine
+        boolean rep = ( arcs.get(0).getOrigin() == this.origin );
+        //on test a chaque fois si la fin d'un arc est l'origine de l'arc suivant
+        while(rep && i<arcs.size()-1 ) {
+        	rep = (arcs.get(i).getDestination() == arcs.get(i+1).getOrigin() );
+        	i++;
+        }
+        
+        return rep;
     }
 
     /**
