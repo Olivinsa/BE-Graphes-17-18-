@@ -12,7 +12,7 @@ package org.insa.algo.utils;
 import java.util.ArrayList;
 
 /**
- * Implements a binary heap. Note that all "matching" is based on the compareTo
+ * Implements a binary heap (tas-min) . Note that all "matching" is based on the compareTo
  * method.
  * 
  * @author Mark Allen Weiss
@@ -144,8 +144,27 @@ public class BinaryHeap<E extends Comparable<E>> implements PriorityQueue<E> {
 
     @Override
     public void remove(E x) throws ElementNotFoundException {
-        // TODO:
+
+    	if (!this.isEmpty()) {	//si le tas n'est pas vide
+
+    		int index = this.array.indexOf(x);//on recupere l'index de x
+
+    		if((index != -1) && (index < this.currentSize )) {	//si x est dans le tas
+    			
+    	        E lastItem = this.array.get(--this.currentSize);
+    	        this.arraySet(index, lastItem);
+    	        this.percolateDown(index);
+    	        this.percolateUp(index);
+
+    			return;	//on sort de la fonction
+    		}
+    	}
+
+    	//sinon, soit le tas est vide, soit x n'est pas dedans
+    	throw new ElementNotFoundException(x);
+    	
     }
+    
 
     @Override
     public E findMin() throws EmptyPriorityQueueException {

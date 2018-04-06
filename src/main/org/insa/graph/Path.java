@@ -103,7 +103,7 @@ public class Path {
            		 
            		 //if this arc leads to the next node and it is the shortest one 
            		 if (suiv.getDestination() == nodes.get(i+1) && suiv.getLength() < shortest) {
-           			 //In this case we actualizing the arc and the value of the shortest arc
+           			 //In this case we actualize the arc and the value of the shortest arc
            			 A_s = suiv;
            			 shortest = suiv.getLength();
            		 }
