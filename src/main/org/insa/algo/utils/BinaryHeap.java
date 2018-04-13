@@ -71,6 +71,7 @@ public class BinaryHeap<E extends Comparable<E>> implements PriorityQueue<E> {
      */
     private int index_left(int index) {
         return index * 2 + 1;
+        //Le fils droit est à l'index: index * 2 + 2
     }
 
     /**
@@ -165,7 +166,6 @@ public class BinaryHeap<E extends Comparable<E>> implements PriorityQueue<E> {
     	
     }
     
-
     @Override
     public E findMin() throws EmptyPriorityQueueException {
         if (isEmpty())
