@@ -71,6 +71,7 @@ public class BinaryHeap<E extends Comparable<E>> implements PriorityQueue<E> {
      */
     private int index_left(int index) {
         return index * 2 + 1;
+        //Le fils droit est a l'index: index * 2 + 2
     }
 
     /**
@@ -96,7 +97,7 @@ public class BinaryHeap<E extends Comparable<E>> implements PriorityQueue<E> {
      * 
      * @param index Index at which the percolate begins.
      */
-    private void percolateDown(int index) {
+    private void percolateDown(int index) { //Complexite logarithmique 
         int ileft = index_left(index);
         int iright = ileft + 1;
 
@@ -160,7 +161,6 @@ public class BinaryHeap<E extends Comparable<E>> implements PriorityQueue<E> {
     	throw new ElementNotFoundException(x);
     }
     
-
     @Override
     public E findMin() throws EmptyPriorityQueueException {
         if (isEmpty())
