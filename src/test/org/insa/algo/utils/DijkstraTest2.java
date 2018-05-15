@@ -184,7 +184,7 @@ public class DijkstraTest2 {
 
             @Override
             public double getCost(Arc arc) {
-                return arc.getLength();
+                return arc.getMinimumTravelTime();
             }
 
             @Override
@@ -246,11 +246,105 @@ public class DijkstraTest2 {
 
             @Override
             public String toString() {
-                return "Shortest path, all roads allowed";
+                return "shortest path only road open for cars";
             }
         };
 
         ShortestPathData data = new ShortestPathData(graph, graph.get(344),  graph.get(535), AS );
+    	
+    	BellmanFordAlgorithm B = new BellmanFordAlgorithm(data);
+    	ShortestPathSolution s_B = B.run();
+
+    	DijkstraAlgorithm D = new DijkstraAlgorithm(data);
+    	ShortestPathSolution s_D = D.run();
+    	System.out.println(s_B +"---"+ s_D);
+		assertTrue(s_B.getPath().getMinimumTravelTime() == s_D.getPath().getMinimumTravelTime());
+	}
+	
+	@Test
+	public void test6()  throws IOException {
+		//test mode : fastest path only road open for cars
+		initAll();
+		
+		ArcInspector AS = new ArcInspector() {
+
+            @Override
+            public boolean isAllowed(Arc arc) {
+            	if(arc.getRoadInformation().getAccessRestrictions().isAllowedFor(AccessMode.FOOT,arc.getRoadInformation().getAccessRestrictions().getRestrictionFor(AccessMode.MOTORCAR))) {
+            		return true;
+            	}
+            	return false;
+            }
+
+            @Override
+            public double getCost(Arc arc) {
+                return arc.getMinimumTravelTime();
+            }
+
+            @Override
+            public int getMaximumSpeed() {
+                return GraphStatistics.NO_MAXIMUM_SPEED;
+            }
+
+            @Override
+            public Mode getMode() {
+                return Mode.TIME;
+            }
+
+            @Override
+            public String toString() {
+                return "fastest path only road open for cars";
+            }
+        };
+
+        ShortestPathData data = new ShortestPathData(graph, graph.get(344),  graph.get(535), AS );
+    	
+    	BellmanFordAlgorithm B = new BellmanFordAlgorithm(data);
+    	ShortestPathSolution s_B = B.run();
+
+    	DijkstraAlgorithm D = new DijkstraAlgorithm(data);
+    	ShortestPathSolution s_D = D.run();
+    	System.out.println(s_B +"---"+ s_D);
+		assertTrue(s_B.getPath().getMinimumTravelTime() == s_D.getPath().getMinimumTravelTime());
+	}
+	
+	@Test
+	public void test7()  throws IOException {
+		//test mode : fastest path for pedestrian
+		initAll();
+		
+		ArcInspector AS = new ArcInspector() {
+
+            @Override
+            public boolean isAllowed(Arc arc) {
+            	/*if(arc.getRoadInformation().getAccessRestrictions().isAllowedFor(AccessMode.FOOT,arc.getRoadInformation().getAccessRestrictions().getRestrictionFor(AccessMode.FOOT))) {
+            		return true;
+            	}*/		//Problématique
+            	return true;
+            }
+
+            @Override
+            public double getCost(Arc arc) {
+                return arc.getMinimumTravelTime();//arc.getLength();
+            }
+
+            @Override
+            public int getMaximumSpeed() {
+                return GraphStatistics.NO_MAXIMUM_SPEED;
+            }
+
+            @Override
+            public Mode getMode() {
+                return Mode.TIME;
+            }
+
+            @Override
+            public String toString() {
+                return "Fastest path for pedestrian";
+            }
+        };
+
+        ShortestPathData data = new ShortestPathData(graph, graph.get(692),  graph.get(117), AS );
     	
     	BellmanFordAlgorithm B = new BellmanFordAlgorithm(data);
     	ShortestPathSolution s_B = B.run();

@@ -4,7 +4,6 @@ package org.insa.algo.shortestpath;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
-
 import org.insa.algo.AbstractSolution.Status;
 import org.insa.algo.utils.BinaryHeap;
 import org.insa.graph.Arc;
@@ -40,12 +39,7 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
 		// Notify observers about the first event (origin processed).
 		notifyOriginProcessed(data.getOrigin());
 		
-        tabLabel = new Label[graph.size()]; //On cree un tableau de label de taille n; cela permet aussi de reset le tableau de Label si on lance l'algo plusieurs fois de suite 
-
-		for (Node node : graph) { //initialisation du label pour chaque noeud
-			Label l = new Label(node.getId());
-			tabLabel[node.getId()]= l;
-		}
+        initializeLabel(graph);
 		
 		Node origin = data.getOrigin();
 		Label labelOrigin = getLabel(origin.getId()); //label du noeud de départ
@@ -88,7 +82,7 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
 				
 				if(labelVoisin.mark != 2) { //si le noeud voisin n'a pas été marqué
 					double newCout = labelX.cout + data.getCost(a); //calcul du cout menant à ce noeud et passant par cet arc
-					
+
 					if(labelVoisin.cout > newCout){ //si le cout est plus petit, on le remplace
 						labelVoisin.cout = newCout;
 						labelVoisin.arcPere = a;//et on remplace le pere
@@ -140,9 +134,17 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
 		return solution;
 	}
     
-	public static Label getLabel(int id){
+	protected static Label getLabel(int id){
 		return tabLabel[id];
 			
+	}
+	
+	protected void initializeLabel(Graph graph) {
+		tabLabel = new Label[graph.size()]; //On cree un tableau de label de taille n; cela permet aussi de reset le tableau de Label si on lance l'algo plusieurs fois de suite 
+		for (Node node : graph) { //initialisation du label pour chaque noeud
+			Label l = new Label(node.getId());
+			tabLabel[node.getId()]= l;
+		}
 	}
 	
 

@@ -16,13 +16,11 @@ public class Label implements Comparable<Label>{
 		this.arcPere = null;
 	}
 	
-	
 
-	
-    @Override
+
+	@Override
     public int compareTo(Label other) {
-    	
         return (int)(this.cout - other.cout);
     }
-
+	
 }
