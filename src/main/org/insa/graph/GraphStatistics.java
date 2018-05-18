@@ -73,7 +73,7 @@ public class GraphStatistics {
          * Create a new bounding box by extending the current one according by the given
          * value on each side.
          * 
-         * @param size Extra size to add to each side of this box.
+         * @param size ExGraphStatistics graphStatisticstra size to add to each side of this box.
          * 
          * @return New bounding box corresponding to an extension of the current one.
          */

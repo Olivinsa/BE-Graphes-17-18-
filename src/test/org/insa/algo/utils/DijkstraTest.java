@@ -3,9 +3,7 @@ package org.insa.algo.utils;
 import static org.junit.Assert.*;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 import org.insa.algo.ArcInspector;
 import org.insa.algo.AbstractInputData.Mode;
@@ -16,7 +14,6 @@ import org.insa.algo.shortestpath.ShortestPathSolution;
 import org.insa.graph.Arc;
 import org.insa.graph.Graph;
 import org.insa.graph.GraphStatistics;
-import org.insa.graph.Label;
 import org.insa.graph.Node;
 import org.insa.graph.Path;
 import org.insa.graph.RoadInformation;

@@ -11,14 +11,18 @@ import org.insa.graph.Graph;
 import org.insa.graph.Node;
 import org.insa.graph.Path;
 import org.insa.graph.Label;
+import org.insa.graph.LabelProbleme;
 
-public class DijkstraAlgorithm extends ShortestPathAlgorithm {
+public class DijkstraVersTous extends ShortestPathAlgorithm {
 	
 	public static Label[] tabLabel;
+	public LabelProbleme[] tabLabelProbleme;
+	public String robot;
 
-
-    public DijkstraAlgorithm(ShortestPathData data) {
+    public DijkstraVersTous(ShortestPathData data, LabelProbleme[] tabLabelProbleme, String robot) {
         super(data);
+        this.tabLabelProbleme = tabLabelProbleme;
+        this.robot = robot; //La chaine de carac. vaut A ou B
     }
 
     @Override
@@ -26,24 +30,25 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
 
         ShortestPathData data = getInputData();
         ShortestPathSolution solution = null; //initialisation de la solution
-        
-        if(data.getOrigin().compareTo(data.getDestination()) == 0) { //Si le point de départ est la destination alors retourner "infaisable"
-        	solution = new ShortestPathSolution(data, Status.INFEASIBLE);
-        	return solution;
-        }
-        
+
         Graph graph = data.getGraph();
-        
-        
-        
+      
 		// Notify observers about the first event (origin processed).
 		notifyOriginProcessed(data.getOrigin());
 		
         initializeLabel(graph);
-		
+
 		Node origin = data.getOrigin();
 		Label labelOrigin = getLabel(origin.getId()); //label du noeud de départ
 		labelOrigin.cout = 0;
+		
+		LabelProbleme labelDepart = getLabelProbleme(origin.getId()); //labelProbleme du noeud de départ
+		if(robot.equals("A")) {
+			labelDepart.coutDepuisDepart1 = 0;
+		}
+		else {
+			labelDepart.coutDepuisDepart2 = 0;
+		}
 		
 		//Insertion dans le tas
 		BinaryHeap<Label> tas = new BinaryHeap<Label>();
@@ -52,22 +57,17 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
 		
 		//Itérations
 		int compteur = 0;
-		boolean nonFin = true;
-		
-		while(!tas.isEmpty() && nonFin) {
+
+		while(!tas.isEmpty()) {
 			Label labelX = tas.deleteMin();//recuperation du label
 			labelX.mark = 2; //2 -> label marqué et sorti du tas
 			Node x = graph.get(labelX.idNode); //noeud associé à ce label
 			Iterator<Arc> successeurs = x.iterator(); //liste des arcs sortants de x
-
-			if(x == data.getDestination()) { 
-				//si le noeud est la destination, le chemin est trouvé, donc on sort
-				nonFin = false;
-			}
 			
 			while(successeurs.hasNext()) { //pour chacun des arcs sortants
 				Arc a = successeurs.next();
 				compteur++;
+				
 				// Un petit test pour vérifier si l'arc est autorisé...
 				if (!data.isAllowed(a)) {
 					continue;
@@ -79,12 +79,20 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
 				//notifyNodeMarked(voisin);
 				
 				Label labelVoisin = getLabel(voisin.getId()); //on prend le label du successeur
+				LabelProbleme labelProblemeVoisin = getLabelProbleme(voisin.getId()); //on prend le label du successeur
 				
 				if(labelVoisin.mark != 2) { //si le noeud voisin n'a pas été marqué
 					double newCout = labelX.cout + data.getCost(a); //calcul du cout menant à ce noeud et passant par cet arc
 
 					if(labelVoisin.cout > newCout){ //si le cout est plus petit, on le remplace
 						labelVoisin.cout = newCout;
+						if(robot.equals("A")) {
+							labelProblemeVoisin.coutDepuisDepart1 = newCout;
+						}
+						else {
+							labelProblemeVoisin.coutDepuisDepart2 = newCout;
+						}
+						
 						labelVoisin.arcPere = a;//et on remplace le pere
 						
 
@@ -137,6 +145,11 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
 			
 	}
 	
+	protected LabelProbleme getLabelProbleme(int id){
+		return this.tabLabelProbleme[id];
+			
+	}
+	
 	protected void initializeLabel(Graph graph) {
 		tabLabel = new Label[graph.size()]; //On cree un tableau de label de taille n; cela permet aussi de reset le tableau de Label si on lance l'algo plusieurs fois de suite 
 		for (Node node : graph) { //initialisation du label pour chaque noeud
@@ -147,3 +160,4 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
 	
 
 }
+
