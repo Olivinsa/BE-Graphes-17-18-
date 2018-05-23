@@ -49,7 +49,7 @@ public class Probleme{
 
             @Override
             public Mode getMode() {
-                return Mode.TIME;
+                return Mode.LENGTH;
             }
 
             @Override
@@ -125,7 +125,7 @@ public class Probleme{
 
             @Override
             public Mode getMode() {
-                return Mode.TIME;
+                return Mode.LENGTH;
             }
 
             @Override

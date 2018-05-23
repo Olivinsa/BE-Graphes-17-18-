@@ -27,7 +27,7 @@ public class ProblemeTest {
     @Test
     public void test() throws IOException {
     	initAll();
-    	Probleme P = new Probleme(this.graph, this.graph.get(12243),this.graph.get(3426),this.graph.get(3874),this.graph.get(2672));
+    	Probleme P = new Probleme(this.graph, this.graph.get(12243),this.graph.get(3426),this.graph.get(2672),this.graph.get(3874));
     	P.run();
     }
     

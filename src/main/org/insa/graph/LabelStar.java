@@ -28,7 +28,7 @@ public class LabelStar extends Label implements Comparable<Label>{
 		Node arrive = data.getDestination();
 		double distance_arrive1 = Point.distance(n1.getPoint(), arrive.getPoint());
 		double distance_arrive2 = Point.distance(n2.getPoint(), arrive.getPoint());
-		System.out.println(this.cout);
+		//System.out.println(this.cout);
 		if (data.getMode() == Mode.TIME) {
 
 			distance_arrive1 = distance_arrive1/(double)speed;
